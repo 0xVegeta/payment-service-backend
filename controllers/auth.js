@@ -1,52 +1,60 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/bizModel");
 const generateToken = require("../config/utility");
+const Wallet = require("./../models/walletModel");
+
 
 const register = asyncHandler(async (req, res) => {
-	const { name, email, password } = req.body;
+	const { organization, email, password, category } = req.body;
 
-	if (!name || !email || !password) {
+	if (!organization || !email || !password) {
 		res.status(400);
 		throw new Error("Please Enter all the fields");
 	}
 
 	const userExists = await User.findOne({ email });
+    console.log(userExists);
 	if (userExists) {
 		res.status(400);
 		throw new Error("User already Exists");
 	}
 
 	const user = await User.create({
-		name,
+		organization,
 		email,
 		password,
+        category
 	});
 
 	if (user) {
-		res.status(201).json({
-			_id: user._id,
-			name: user.name,
-			email: user.email,
-			token: generateToken(user._id),
-		});
-	} else {
-		res.status(400);
-		throw new Error("Failed to create a user");
-	}
+        const wallet = await Wallet.findOne({ userID: user._id });
+    
+        res.status(201).json({
+          _id: user._id,
+          merchant: user.organization,
+          email: user.email,
+          balance: wallet.balance,
+          token: generateToken(user._id),
+        });
+    } else {
+        res.status(400);
+        throw new Error("Failed to create a user");
+    }
 });
 
-const authUser = asyncHandler(async (req, res) => {
+const login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
 	const user = await User.findOne({ email });
 
 	if (user && (await user.matchPassword(password))) {
+        const wallet = await Wallet.findOne({ userID: user._id });
 		res.status(200);
 		res.json({
 			_id: user._id,
-			name: user.name,
+			merchant: user.organization,
 			email: user.email,
-			pic: user.pic,
+            balance:  wallet.balance,
 			token: generateToken(user._id),
 		});
 	} else {
@@ -55,21 +63,9 @@ const authUser = asyncHandler(async (req, res) => {
 	}
 });
 
-const allUsers = asyncHandler(async (req, res) => {
-	const keyword = req.query.search
-		? {
-				$or: [
-					{ name: { $regex: req.query.search, $options: "i" } },
-					{ email: { $regex: req.query.search, $options: "i" } },
-				],
-		  }
-		: {};
 
-	const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-	res.send(users);
-});
 
-module.exports = { register, authUser, allUsers };
+module.exports = { register, login};
 
 
 // module.exports = {

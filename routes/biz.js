@@ -6,6 +6,6 @@ const {protect} = require('../middlewares/authentication')
 
 
 bizRouter.post('/register', authControllers.register)
-// bizRouter.post('/login', authControllers.login)
+bizRouter.post('/login', protect,authControllers.login)
 
 module.exports = bizRouter;
