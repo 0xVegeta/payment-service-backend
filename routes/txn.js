@@ -6,6 +6,6 @@ const {protect} = require('../middlewares/authentication')
 
 
 txnRouter.post('/pay', txnControllers.payment)
-// txnRouter.post('/refund', protect, authControllers.login)
+txnRouter.post('/withdraw', protect, txnControllers.withdraw)
 
 module.exports = txnRouter;
