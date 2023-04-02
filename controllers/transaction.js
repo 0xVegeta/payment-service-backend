@@ -2,9 +2,23 @@ const asyncHandler = require("express-async-handler");
 const Wallet = require("../models/walletModel");
 const Transaction = require("../models/transactionModel");
 const User = require("../models/bizModel")
+const { v4: uuid } = require('uuid');
+const cachingServices = require('../services/caching')
+
 
 const payment = asyncHandler(async (req, res) => {
-    
+    const paymentTraceId =  uuid()
+    console.log('check trace', paymentTraceId);
+    cachingServices.putData({
+        body: {
+            key: paymentTraceId,
+            data: {
+                createdAt: new Date().getTime(),
+            },
+            ttl: config.SESSION_TTL
+        }
+    })
+    return res.status(200).json({'traceId': "paymentTraceId"})
     
 });
 
