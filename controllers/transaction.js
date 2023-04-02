@@ -4,7 +4,8 @@ const Transaction = require("../models/transactionModel");
 const User = require("../models/bizModel")
 
 const payment = asyncHandler(async (req, res) => {
-
+    
+    
 });
 
 const withdraw = asyncHandler(async (req, res) => {

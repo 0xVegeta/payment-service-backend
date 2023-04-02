@@ -10,7 +10,9 @@ const walletSchema = mongoose.Schema({
     },
   ],
   updatedAt: { type: Date },
-});
+},
+{ timestamps: true }
+);
 
 const Wallet = mongoose.model("Wallet", walletSchema);
 module.exports = Wallet;
