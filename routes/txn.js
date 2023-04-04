@@ -5,7 +5,7 @@ const {protect} = require('../middlewares/authentication')
 // const { errorWrapper } = require('../common/utility');
 
 
-txnRouter.post('/pay', txnControllers.payment)
+txnRouter.post('/payment-session', txnControllers.paymentSession)
 txnRouter.post('/withdraw', protect, txnControllers.withdraw)
 
 module.exports = txnRouter;

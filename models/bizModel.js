@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const Wallet = require("./walletModel");
+const {generateMaskedCode} = require("../common/libraries");
 
 const userSchema = mongoose.Schema(
 	{
@@ -10,31 +11,47 @@ const userSchema = mongoose.Schema(
 			type: String,
 			required: true,
 		},
+        code: { type: String, required: false },
         category : { type: String, required: false }
 		
 	},
 	{ timestamps: true }
 );
 
-userSchema.post("save", async function (doc, next) {
-    try {
-      // Check if the user already has a wallet
-      const wallet = await Wallet.findOne({ userID: doc._id });
-  
-      // If the user doesn't have a wallet, create one
-      if (!wallet) {
-        const newWallet = new Wallet({
-          userID: doc._id,
-          balance: 0,
-        });
-        await newWallet.save();
-      }
-  
-      next();
-    } catch (error) {
-      next(error);
-    }
-  });
+userSchema.pre("save", async function (next) {
+	// Check if the code field has already been updated
+	if (this.isNew && !this.code) {
+		try {
+			const maskedCode = generateMaskedCode({
+				identifier: this._id,
+				className: 'User'
+			});
+			console.log('check------------',maskedCode)
+			this.code = maskedCode;
+
+			// Check if the user already has a wallet
+			const wallet = await Wallet.findOne({ userID: this._id });
+
+			// If the user doesn't have a wallet, create one
+			if (!wallet) {
+				const newWallet = new Wallet({
+					userID: this._id,
+					balance: 0,
+				});
+				await newWallet.save();
+			}
+
+			next();
+		} catch (error) {
+			console.error(error); // Log any errors that occur
+			next(error);
+		}
+	} else {
+		next();
+	}
+});
+
+
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
 	return await bcrypt.compare(enteredPassword, this.password);

@@ -13,7 +13,7 @@ const register = asyncHandler(async (req, res) => {
 	}
 
 	const userExists = await User.findOne({ email });
-    console.log(userExists);
+    console.log('check---------------',userExists);
 	if (userExists) {
 		res.status(400);
 		throw new Error("User already Exists");
@@ -46,6 +46,7 @@ const login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
 
 	const user = await User.findOne({ email });
+	console.log('checl user--------', user)
 
 	if (user && (await user.matchPassword(password))) {
         const wallet = await Wallet.findOne({ userID: user._id });

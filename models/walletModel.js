@@ -9,8 +9,11 @@ const walletSchema = mongoose.Schema({
       ref: "Transaction",
     },
   ],
+  code: { type: String, required: false },
   updatedAt: { type: Date },
-});
+},
+{ timestamps: true }
+);
 
 const Wallet = mongoose.model("Wallet", walletSchema);
 module.exports = Wallet;
