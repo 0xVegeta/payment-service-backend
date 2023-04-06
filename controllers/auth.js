@@ -30,10 +30,12 @@ const register = asyncHandler(async (req, res) => {
         const wallet = await Wallet.findOne({ userID: user._id });
     
         res.status(201).json({
-          _id: user._id,
+          userCode: user.code,
           merchant: user.organization,
           email: user.email,
+		  walletCode: wallet.code,
           balance: wallet.balance,
+		  pin:wallet.pin,
           token: generateToken(user._id),
         });
     } else {
@@ -52,10 +54,11 @@ const login = asyncHandler(async (req, res) => {
         const wallet = await Wallet.findOne({ userID: user._id });
 		res.status(200);
 		res.json({
-			_id: user._id,
+			userCode: user.code,
 			merchant: user.organization,
 			email: user.email,
             balance:  wallet.balance,
+			walletCode: wallet.code,
 			token: generateToken(user._id),
 		});
 	} else {

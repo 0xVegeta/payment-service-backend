@@ -23,6 +23,7 @@
     "express-async-handler": "^1.2.0",
     "joi": "^17.9.1",
     "jsonwebtoken": "^9.0.0",
+    "mongodb": "^5.2.0",
     "mongoose": "^7.0.3",
     "nodemon": "^2.0.22",
     "redis": "^3.0.2",

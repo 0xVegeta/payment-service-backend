@@ -17,4 +17,33 @@ const connectDB = async () => {
 	}
 };
 
-module.exports = connectDB;
+let session = null;
+
+const startAtomicSession = async (walletId = null) => {
+	if (session) {
+		return session;
+	}
+
+	session = await mongoose.startSession();
+	session.startTransaction();
+
+	if (walletId) {
+		await session.withTransaction({ readPreference: "primary" });
+	}
+	session.on("error", () => {
+		session.endSession();
+		session = null;
+	});
+
+	session.on("ended", () => {
+		session = null;
+	});
+
+	return session;
+};
+
+
+module.exports = {
+	connectDB,
+	startAtomicSession
+};

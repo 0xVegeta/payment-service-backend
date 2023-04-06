@@ -23,6 +23,11 @@ function generateMaskedCode({identifier, className}) {
     }
     return prefix + code;
 }
+const generateSixDigitPin = () =>{
+    let pin = Math.floor(Math.random() * 900000) + 100000;
+    return pin.toString();
+}
+
 
 
 const check =generateMaskedCode({ identifier: '6422e262dad700744aded37c', className: 'Transaction' })
@@ -30,5 +35,5 @@ console.log('check-----------------------', check)
 
 
 module.exports = {
-    generateMaskedCode
+    generateMaskedCode,generateSixDigitPin
 }
