@@ -7,6 +7,7 @@ const transactionSchema = mongoose.Schema(
   {
     userID: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     walletID: { type: mongoose.Schema.Types.ObjectId, ref: "Wallet", required: true },
+    walletCode: { type: String, ref: "Wallet.code", index:true },
     transactionTraceId: { type: String, required: true },
     amount: {
         type: Number,

@@ -34,6 +34,7 @@ const paymentSession = asyncHandler(async (req, res) => {
         const transaction = await Transaction.create({
             userID: wallet.userID,
             walletID: wallet._id,
+            walletCode: walletCode,
             amount,
             transactionTraceId,
             totalAmount,
@@ -72,6 +73,12 @@ const acceptPayment = asyncHandler(async (req, res) => {
     if(transactionRecord.totalAmount !== totalAmount){
         res.status(400).json({message:"Invalid amount, please make sure amount is sent correctly"})
     }
+
+    // Check if payment session is still valid
+    const paymentSessionValidity = await cachingServices.getTTL(`paymentTrace-${transactionTraceId}`);
+    if (paymentSessionValidity === -2) {
+        return res.status(400).json({ error: `Payment session expired for trace ID ${transactionTraceId}` });
+    }
     const session = await mongoose.startSession();
     session.startTransaction();
 
@@ -84,23 +91,16 @@ const acceptPayment = asyncHandler(async (req, res) => {
         return res.status(400).json({ error: "Insufficient balance" });
     }
 
-
-    // Check if payment session is still valid
-    const paymentSessionValidity = await cachingServices.getTTL(`paymentTrace-${transactionTraceId}`);
-    if (paymentSessionValidity === -2) {
-        await session.abortTransaction();
-        await session.endSession();
-        return res.status(400).json({ error: `Payment session expired for trace ID ${transactionTraceId}` });
-    }
-
     const transactionSession = await startAtomicSession();
     try {
         // Deduct amount from fromWallet
         const deductionResult = await Wallet.updateOne({ _id: fromWallet._id }, { $inc: { balance: -totalAmount } }, { session: transactionSession });
+        const updatedBalance = await Wallet.findOne({ _id: fromWallet._id }, { balance: 1, _id: 0 }, { session });
+        console.log('check decduct-----------', updatedBalance)
         if (deductionResult.nModified === 0) {
             await transactionSession.abortTransaction();
-            transactionSession.endSession();
-            await cachingServices.delData(`paymentTrace-${req.params.traceId}`);
+            await transactionSession.endSession();
+            // await cachingServices.delData(`paymentTrace-${req.params.traceId}`);
             return res.status(500).json({ error: "Error occurred while deducting amount from the wallet" });
         }
 
@@ -117,6 +117,7 @@ const acceptPayment = asyncHandler(async (req, res) => {
         const transaction = new Transaction({
             userID: fromWallet.userID,
             walletID: fromWallet._id,
+            walletCode: fromWallet.code,
             amount: transactionRecord.amount,
             totalAmount: transactionRecord.totalAmount,
             serviceFee: config.SERVICE_FEE,
@@ -124,6 +125,12 @@ const acceptPayment = asyncHandler(async (req, res) => {
             type: TransactionType.DEBIT,
         });
         await transaction.save({ session: transactionSession });
+        await Transaction.updateOne(
+            { transactionTraceId: transactionTraceId },
+            { code: transaction.code },
+            { session: transactionSession }
+        );
+
 
         // Delete payment session from cache
         // await cachingServices.delData(`paymentTrace-${req.params.traceId}`);
