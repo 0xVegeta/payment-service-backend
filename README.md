@@ -24,8 +24,8 @@ $ npm i
 # create a MongoDB Atlas instance and obtain the MongoDB URI
 # choose a random JWT secret
 # create a .env file with the following fields according to the knowledge obtained
-   NODE_ENV 
-   PORT 
+   REDIS_HOST 
+   REDIS_PORT 
    MONGO_URI 
    JWT_SECRET 
    
