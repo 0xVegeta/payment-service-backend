@@ -47,21 +47,15 @@ A business can login itself by entering email and password or register itself by
 
 #### Get all items
 
-http
-  GET /api/items
+## API Reference
 
+#### Register an organization
 
-| Parameter | Type     | Description                |
-| :-------- | :------- | :------------------------- |
-| `api_key` | `string` | *Required*. Your API key |
+```http
+  POST /api/v1/org/register
+```
 
-#### Get item
-
-http
-  GET /api/items/${id}
-
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | *Required*. Id of item to fetch |
+| Access   | Description                |
+|:-------  | :------------------------- |
+| `string` | **Required**. Your API key |
 
