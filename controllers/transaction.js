@@ -24,7 +24,7 @@ const paymentSessionController = asyncHandler(async (req, res) => {
 });
 
 
-const acceptPayment = async (req, res) => {
+const acceptPayment = asyncHandler(async (req, res) => {
     const { fromWalletCode, totalAmount, pin } = req.body;
     const { transactionTraceId } = req.params;
 
@@ -37,7 +37,7 @@ const acceptPayment = async (req, res) => {
         }
         return res.status(500).json({ error: error.message });
     }
-};
+});
 
 
 

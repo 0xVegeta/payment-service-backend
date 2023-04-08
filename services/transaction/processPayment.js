@@ -15,7 +15,7 @@ const processPayment = asyncHandler(async ({fromWalletCode, totalAmount, pin, tr
     const fromWallet = await Wallet.findOne({ code: fromWalletCode });
     const transactionRecord = await Transaction.findOneAndUpdate({transactionTraceId},{ counterparty: fromWallet.userCode })
     const toWallet = await Wallet.findOne({ _id: transactionRecord.walletID });
-    if(fromWalletCode === toWallet){
+    if(fromWalletCode === toWallet.code){
         throw { message: "Invalid wallet! Payer and payee can't be same entity", status: 400 };
     }
 
