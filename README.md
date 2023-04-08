@@ -37,10 +37,14 @@ $ npm start
 
 ## Happy Flow
 A business can login itself by entering email and password or register itself by entering the Organisation Name, email, password and category. A soon as a buisiness gets registered, a wallet is created for them using their credentials.
+### Basic Database Design diagram
+![Database design diagram](https://github.com/0xVegeta/payment-gateway/raw/main/assets/Database%20design.jpeg)<br>
 
-![Database design diagram](https://github.com/0xVegeta/payment-gateway/raw/main/assets/Database%20design.jpeg)
-![Payment-session API](https://github.com/0xVegeta/payment-gateway/raw/main/assets/payment-session-API.jpeg)
-![Accept-payment](https://github.com/0xVegeta/payment-gateway/raw/main/assets/payment-session-API.jpeg)
+### Payment-session API
+![Payment-session API](https://github.com/0xVegeta/payment-gateway/raw/main/assets/payment-session-API.jpeg)<br>
+
+### Accept Payment API
+![Accept-payment](https://github.com/0xVegeta/payment-gateway/raw/main/assets/accept-payment.jpeg)
 
 ## API Reference
 
