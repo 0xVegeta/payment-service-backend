@@ -9,8 +9,7 @@ A Payment Gateway build upon NodeJS using ExpressJS. It basically is a backend a
 - *Database* - MongoDB
 - *Cloud database service* - MongoDB Atlas
 - *Authorizatiion* - JWT
-- *Backend Deployment* - Render
-
+- *Backend Deployment* -
 
 ## Installation
 
@@ -40,8 +39,9 @@ $ npm start
 ## Happy Flow
 A business can login itself by entering email and password or register itself by entering the Organisation Name, email, password and category. A soon as a buisiness gets registered, a wallet is created for them using their credentials.
 
-![Database design diagram](https://github.com/0xVegeta/payment-gateway/raw/main/Database%20design.jpeg)
-
+![Database design diagram](https://github.com/0xVegeta/payment-gateway/raw/main/assets/Database%20design.jpeg)
+![Payment-session API](https://github.com/0xVegeta/payment-gateway/raw/main/assets/payment-session-API.jpeg)
+![Accept-payment](https://github.com/0xVegeta/payment-gateway/raw/main/assets/payment-session-API.jpeg)
 
 ## API Reference
 
@@ -49,11 +49,32 @@ A business can login itself by entering email and password or register itself by
 
 ## API Reference
 
-#### Register an organization
+`/api/v1/org`
 
-```http
-  POST /api/v1/org/register
-```
+| REQUEST METHODS | ENDPOINTS | DESCRIPTION |
+| :-------------- | :-------: | ------------------: |
+| POST | /register |  Register your organization |
+| POST | /login| Login from your organization account|
+| GET | /profile | Get your organization profile |
+| PUT | /put | Add/update addition profile details|
+
+
+`/api/v1/txn`
+
+| REQUEST METHODS | ENDPOINTS | DESCRIPTION |
+| :-------------- | :-------: | ------------------: |
+| POST | /payment-session/:walletCode |  Create a unique payment session |
+| POST | /accept-payment/:transactionTraceId | Accept payment|
+| POST | /transaction | Get all transaction details of an organization |
+
+`/api/v1/wallets`
+
+| REQUEST METHODS | ENDPOINTS | DESCRIPTION |
+| :-------------- | :-------: | ------------------: |
+| POST | / |  Create a wallet within an organization |
+| GET | / | Get all the wallets of a user |
+
+
 
 | Access   | Description                |
 |:-------  | :------------------------- |
