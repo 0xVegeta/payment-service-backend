@@ -1,5 +1,4 @@
-# payment-gateway
- # Payment Gateway
+# Payment Service
 
 A Payment Gateway build upon NodeJS using ExpressJS. It basically is a backend application to be used by businesses to streamline the incoming payments from their respective customers.
 
