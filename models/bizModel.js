@@ -44,7 +44,9 @@ userSchema.pre("save", async function (next) {
 					userID: this._id,
 					balance: 1000,
 					isDefault: true,
-					pin: 123456
+					pin: 123456,
+					userCode: this.code,
+
 				});
 				await newWallet.save();
 			}

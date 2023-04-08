@@ -3,6 +3,7 @@ const {generateMaskedCode} = require("../common/libraries");
 
 const walletSchema = mongoose.Schema({
   userID: {type: mongoose.Schema.Types.ObjectId, ref: "User", required: true},
+  userCode: { type: String, ref: "Wallet.code", index:true },
   balance: {type: Number, required: true},
   code: {type: String, required: false},
   updatedAt: {type: Date},

@@ -4,4 +4,11 @@ const TransactionType = {
     DEBIT: 'debit',
 };
 
-module.exports = TransactionType;
+const TransactionStatus = {
+    INITIATED:"initiated",
+    PENDING: "pending",
+    SUCCESS:"success",
+    FAILED: "failed"
+}
+
+module.exports = {TransactionType, TransactionStatus}

@@ -7,7 +7,7 @@ const {protect} = require('../middlewares/authentication')
 
 txnRouter.post('/payment-session/:walletCode', txnControllers.paymentSession)
 txnRouter.post('/accept-payment/:transactionTraceId', txnControllers.acceptPayment)
-// txnRouter.post('/pay', txnControllers.pay)
 txnRouter.post('/withdraw', protect, txnControllers.withdraw)
+txnRouter.post('/transaction', protect, txnControllers.getTransaction)
 
 module.exports = txnRouter;

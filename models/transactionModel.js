@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const {generateMaskedCode} = require("../common/libraries");
 const Wallet = require("./walletModel");
-const TransactionType = require("../common/enum");
+const {TransactionType, TransactionStatus} = require("../common/enum");
 
 const transactionSchema = mongoose.Schema(
   {
@@ -23,13 +23,14 @@ const transactionSchema = mongoose.Schema(
     serviceFee: { type: Number, required: true },
     totalAmount: { type: Number, required: true },
     code: { type: String, required: false},
-    customerID: { type: String, required: false},
+    counterparty: { type: String, required: false },
+    status: { type: String, required: false, enum: ["initiated", "success", "pending", "failed"] }
   },
   { timestamps: true }
 );
 
 transactionSchema.pre("save", async function (next) {
-    if (this.isNew && !this.code && this.type ===TransactionType.DEBIT) {
+    if (this.isNew && !this.code && this.type ===TransactionType.DEBIT && this.status !== TransactionStatus.FAILED) {
         try {
             const maskedCode = generateMaskedCode({
                 identifier: this._id,

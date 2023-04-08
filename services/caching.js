@@ -15,10 +15,16 @@ const getRemainingTime = async (key) => {
     return redis.client.ttlAsync(key)
 }
 
+const deleteKey = async (key) => {
+    return redis.client.delAsync(key)
+}
+
+
 
 module.exports = {
     putData : pushDataViaHMSET,
     getData : getHMSETData,
     getTTL : getRemainingTime,
+    expireKey: deleteKey
 
 }
