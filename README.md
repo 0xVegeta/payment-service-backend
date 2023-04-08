@@ -78,8 +78,3 @@ A business can login itself by entering email and password or register itself by
 | GET | / | Get all the wallets of a user |
 
 
-
-| Access   | Description                |
-|:-------  | :------------------------- |
-| `string` | **Required**. Your API key |
-
