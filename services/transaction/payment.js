@@ -1,6 +1,6 @@
 const Wallet = require("../../models/walletModel");
 const Transaction = require("../../models/transactionModel");
-const User = require("../../models/bizModel")
+const User = require("../../models/organizationModel")
 const { v4: uuid } = require('uuid');
 const cachingServices = require('../caching')
 const {config} = require('../../config/config')
