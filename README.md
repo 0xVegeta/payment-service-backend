@@ -24,8 +24,8 @@ $ npm i
 # create a MongoDB Atlas instance and obtain the MongoDB URI
 # choose a random JWT secret
 # create a .env file with the following fields according to the knowledge obtained
-   NODE_ENV 
-   PORT 
+   REDIS_HOST 
+   REDIS_PORT 
    MONGO_URI 
    JWT_SECRET 
    
@@ -77,11 +77,6 @@ A business can login itself by entering email and password or register itself by
 | POST | / |  Create a wallet within an organization |
 | GET | / | Get all the wallets of a user |
 
-
-
-| Access   | Description                |
-|:-------  | :------------------------- |
-| `string` | **Required**. Your API key |
 
 # Future Scope
 ```
