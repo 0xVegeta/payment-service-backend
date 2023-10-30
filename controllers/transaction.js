@@ -91,8 +91,9 @@ const withdraw = asyncHandler(async (req, res) => {
 
 const getTransaction = asyncHandler(async (req, res) => {
     const { _id } = req.user;
-    const transactions = await Transaction.find({ userID: _id.toString() });
-
+    const { allTransactions , walletCode } = req.body
+    let transactions = walletCode &&  await Transaction.find({walletCode})
+    transactions = allTransactions && await Transaction.find({ userID: _id.toString() });
     res.status(200);
     res.json({
         transactions,
