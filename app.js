@@ -8,6 +8,10 @@ connectDB();
 const express = require("express");
 const expressApp = express();
 const bodyParser = require("body-parser");
+
+expressApp.get('/', (req, res) => {
+  res.json({ message: 'Hello' });
+});
 const { apiRouters } = require("./routes/api");
 
 expressApp.use(bodyParser.urlencoded({ extended: false }));
