@@ -90,7 +90,7 @@ const processPayment = asyncHandler(async ({fromWalletCode, totalAmount, pin, tr
         await transactionSession.commitTransaction();
         await transactionSession.endSession();
 
-        return res.status(200).json({
+        return {
             message: "Payment successful" ,
             transactionDetails: {
                 transactionTraceId: transaction.transactionTraceId,
@@ -104,7 +104,7 @@ const processPayment = asyncHandler(async ({fromWalletCode, totalAmount, pin, tr
                 counterparty: transaction.counterparty
             },
             updatedBalance: updatedBalance.balance
-        });
+        }
     } catch (err) {
         const transaction = new Transaction({
             userID: fromWallet.userID,
